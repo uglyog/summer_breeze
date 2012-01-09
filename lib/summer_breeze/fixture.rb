@@ -21,10 +21,10 @@ module SummerBreeze
     end 
     
     def parse_name
-      return if action.present?
+      return if @action.present?
       result = name.match(/(.*)((\.|#).*)/)
       if result
-        self.action = result[1] 
+        self.action = result[1]
         self.limit_to_selector = result[2]
       else
         self.action = name
@@ -67,7 +67,7 @@ module SummerBreeze
     end
     
     def call_controller
-      controller.process(action, params, session, flash, method)
+      controller.process(@action, @params, @session, @flash, @method)
     end
     
     def run
@@ -88,7 +88,7 @@ module SummerBreeze
     end
     
     def fixture_file
-      File.join(fixture_path, "#{filename}.html")
+      File.join(fixture_path, "#{@filename}.html")
     end
     
     def html_document
@@ -119,17 +119,12 @@ module SummerBreeze
     def scrubbed_response
       result = html_document
       result = remove_third_party_scripts(result)
-      if limit_to_selector.present?
-        result = result.css(limit_to_selector).first.to_s 
+      if @limit_to_selector.present?
+        result.css(@limit_to_selector).first.to_s
       else
-        result = result.to_s
+        result.css('body').to_s
       end
-      convert_body_tag_to_div(result)
     end
 
-    def convert_body_tag_to_div(markup)
-      markup.gsub("<body", '<div').gsub("</body>", "</div>")
-    end
-    
   end
 end
