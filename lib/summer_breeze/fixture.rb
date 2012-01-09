@@ -36,7 +36,8 @@ module SummerBreeze
     end
     
     [:controller_class, :action, :method, :limit_to_selector, :params, :session, :flash, :filename].each do |sym|
-      define_method(sym) do |new_value = :no_op, &block|
+      define_method(sym) do |new_value, &block|
+        new_value ||= :no_op
         unless new_value == :no_op
           send(:"#{sym}=", new_value)
           return 
