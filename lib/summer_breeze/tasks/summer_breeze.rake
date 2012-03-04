@@ -1,8 +1,7 @@
 namespace :summer_breeze do
 
   desc "Generate fixtures for jasmine tests"
-  task :generate_fixtures do
-    Rails.env = 'test'
+  task :generate_fixtures => :environment do
     require File.expand_path("#{Rails.root}/config/environment", __FILE__)
     require "#{Rails.root}/spec/javascripts/support/summer_breeze"
     SummerBreeze::Container.run
